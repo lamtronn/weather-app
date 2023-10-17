@@ -1,12 +1,41 @@
 import { useForm } from "react-hook-form";
+import useGetGeoData from "@/api/v1.0/useGetGeoData";
+import { useCallback, useContext, useEffect } from "react";
+import useApiCreateInvitation from "@/api/v1.0/useGetWeatherData";
+import { HomeContext } from "@/app/page";
+
+type FormType = {
+  city: string;
+  country: string;
+};
 
 const SearchBox = () => {
   const { register, handleSubmit } = useForm();
+  const { getGeoData, location } = useGetGeoData();
+  const { onSearch } = useContext(HomeContext);
+  useEffect(() => {
+    if (location) {
+      // const data = getWeatherData(location);
+      // console.log("data", data);
+      onSearch(location);
+    }
+  }, [location]);
+
+  const submit = useCallback(
+    async (data: FormType) => {
+      const { city, country } = data;
+      // await getGeoData(city, country);
+      // await getGeoData("Bangkok", "TH");
+      onSearch("Bangkok", "TH");
+    },
+    [getGeoData]
+  );
+
   return (
     <div className="w-full mt-3">
       <form
         className="flex gap-3"
-        onSubmit={handleSubmit((data) => console.log(JSON.stringify(data)))}
+        onSubmit={handleSubmit((data) => submit(data))}
       >
         <div className="flex gap-3 mr-5">
           <label
