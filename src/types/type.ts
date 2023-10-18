@@ -1,7 +1,6 @@
 export type LocationType = {
   lat: number;
   lon: number;
-  // name?: string;
 };
 
 export type MainType = {
@@ -56,4 +55,16 @@ export type WeatherDataType = {
   visibility: number;
   weather: WeatherType[];
   wind: WindType;
+};
+
+export type HistorySearchType = {
+  city: string;
+  country: string;
+  id: string;
+  createdDate: Date;
+};
+
+export type CityType = {
+  city: string;
+  country: string;
 };

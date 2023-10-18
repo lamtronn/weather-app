@@ -1,48 +1,66 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { HomeContext } from "@/app/page";
-import useGetGeoData from "@/api/v1.0/useGetGeoData";
+import Image from "next/image";
+import moment from "moment/moment";
+import { isEmptyObject } from "@/utils/objectUtils";
 
 const WeatherData = () => {
   const { weatherData, location } = useContext(HomeContext);
-  if (!weatherData) {
-    return <div>no data</div>;
-  }
-  console.log(weatherData);
-  return (
-    <div className="w-full bg-white rounded mt-3 p-5 flex justify-center flex-col text-center gap-3">
-      <p className="text-2xl">{location?.name}</p>
-      <p className="text-6xl">{Math.round(weatherData.main.temp)}°C</p>
-      <p className="text-lg">
-        H:{Math.round(weatherData.main.temp_max)}°C • L:
-        {Math.round(weatherData.main.temp_min)}°C
-      </p>
-      <div>
-        <p className="text-base">{weatherData.weather[0].description}</p>
-        <p className="text-base">Humidity: {weatherData.main.humidity}</p>
-        <p className="text-base">{weatherData.weather[0].description}</p>
-      </div>
 
-      {/*<table>*/}
-      {/*  <tbody>*/}
-      {/*    <tr>*/}
-      {/*      <td className="w-40">Description:</td>*/}
-      {/*      <td>{weatherData.weather[0].description}</td>*/}
-      {/*    </tr>*/}
-      {/*    <tr>*/}
-      {/*      <td className="w-40">Temperature:</td>*/}
-      {/*      <td>{weatherData.main.temp}</td>*/}
-      {/*    </tr>*/}
-      {/*    <tr>*/}
-      {/*      <td className="w-40">Humidity:</td>*/}
-      {/*      <td>Maria Anders</td>*/}
-      {/*    </tr>*/}
-      {/*    <tr>*/}
-      {/*      <td className="w-40">Time:</td>*/}
-      {/*      <td>Maria Anders</td>*/}
-      {/*    </tr>*/}
-      {/*  </tbody>*/}
-      {/*</table>*/}
-      <div></div>
+  const tempData = useMemo(() => {
+    return {
+      current: `${Math.round(weatherData?.main?.temp)}°C`,
+      min: `${Math.round(weatherData?.main?.temp_min)}°C`,
+      max: `${Math.round(weatherData?.main?.temp_max)}°C`,
+    };
+  }, [weatherData]);
+
+  if (!weatherData) {
+    return (
+      <div
+        className="bg-blue-100 border border-blue-400 text-blue-700 mt-3 px-4 py-3 rounded relative"
+        role="alert"
+      >
+        <span className="block sm:inline">Enter city and country code.</span>
+      </div>
+    );
+  }
+
+  if (isEmptyObject(location)) {
+    return (
+      <div
+        className="bg-red-100 border border-red-400 text-red-700 mt-3 px-4 py-3 rounded relative"
+        role="alert"
+      >
+        <span className="block sm:inline">
+          Not found! Please try another input.
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full backdrop-blur-sm bg-white rounded mt-3 p-5 flex justify-center items-center flex-col text-center gap-3">
+      <div className="flex items-center">
+        <p className="text-2xl">{location?.name}</p>
+        <Image
+          src={`https://openweathermap.org/img/wn/${weatherData?.weather?.[0]?.icon}@2x.png`}
+          width={60}
+          height={60}
+          alt="weather icon"
+        />
+      </div>
+      <p className="text-6xl">{tempData.current}</p>
+      <p className="text-lg">
+        H: {tempData.max} • L: {tempData.min}
+      </p>
+      <div className="block md:flex gap-5 justify-center">
+        <p className="text-base">{weatherData?.weather?.[0]?.description}</p>
+        <p className="text-base">Humidity: {weatherData?.main?.humidity}%</p>
+        <p className="text-base">
+          {moment(new Date()).format("YYYY-MM-DD h:mm a")}
+        </p>
+      </div>
     </div>
   );
 };

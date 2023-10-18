@@ -10,19 +10,18 @@ function useApiGetWeatherData() {
 
     try {
       return await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&units=metric&APPID=${process.env.NEXT_PUBLIC_API_KEY}`
+        `${process.env.NEXT_PUBLIC_API_URL}/data/2.5/weather?lat=${location?.lat}&lon=${location?.lon}&units=metric&APPID=${process.env.NEXT_PUBLIC_API_KEY}`
       )
         .then((res) => res.json())
         .then((result) => {
           setWeatherData(result);
-          console.log(result);
         });
     } finally {
       setSubmitting(false);
     }
   }, []);
 
-  return { getWeatherData, weatherData, submitting };
+  return { getWeatherData, weatherData, submitting, setWeatherData };
 }
 
 export default useApiGetWeatherData;
