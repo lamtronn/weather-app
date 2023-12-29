@@ -7,8 +7,6 @@ A simple application to check weather data from all locations in the world.
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
 <img alt="nextjs" src="https://img.shields.io/badge/-NextJS-000000?style=flat-square&logo=nextdotjs&logoColor=white" /> <img alt="typescript" src="https://img.shields.io/badge/-TypeScript-0060ac?style=flat-square&logo=typescript&logoColor=white" /> <img alt="redux" src="https://img.shields.io/badge/-Redux-7205CD?style=flat-square&logo=redux&logoColor=white" />   
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
